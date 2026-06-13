@@ -1,0 +1,231 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>D01 — Information Architecture · build-up B — dim wireframe + bright apex</title>
+<style>
+ html,body{margin:0;height:100%;background:#0d0d0c;overflow:hidden}
+ #wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+ canvas{display:block;image-rendering:auto}
+</style></head>
+<body><div id="wrap"><canvas id="c"></canvas></div>
+<script>
+const W=1200, H=1200, APEX=[600,393];
+const SEG = [[600.0,526.4,898.78,698.9,"#868990",1.0,1],[600.0,526.4,301.22,698.9,"#868990",1.0,1],[600.0,526.4,600.0,445.9,"#868990",1.0,3],[674.69,489.02,375.92,661.52,"#868990",1.0,2],[525.31,489.02,824.08,661.52,"#868990",1.0,2],[749.39,532.15,450.61,704.65,"#868990",1.0,2],[450.61,532.15,749.39,704.65,"#868990",1.0,2],[824.08,575.27,525.31,747.77,"#868990",1.0,1],[375.92,575.27,674.69,747.77,"#868990",1.0,1],[600.0,489.6,823.09,618.4,"#868990",1.0,2],[600.0,489.6,376.91,618.4,"#868990",1.0,2],[600.0,489.6,600.0,409.1,"#868990",1.0,3],[674.36,452.03,451.27,580.83,"#868990",1.0,3],[525.64,452.03,748.73,580.83,"#868990",1.0,3],[748.73,494.97,525.64,623.77,"#868990",1.0,2],[451.27,494.97,674.36,623.77,"#868990",1.0,2],[600.0,450.5,751.38,537.9,"#868990",1.0,3],[600.0,450.5,448.62,537.9,"#868990",1.0,3],[600.0,450.5,600.0,370.0,"#868990",1.0,4],[675.69,413.7,524.31,501.1,"#868990",1.0,3],[524.31,413.7,675.69,501.1,"#868990",1.0,3],[600.0,409.1,683.66,457.4,"#868990",1.0,3],[600.0,409.1,516.34,457.4,"#868990",1.0,3],[600.0,409.1,600.0,328.6,"#868990",1.0,4],[641.83,352.75,558.17,401.05,"#868990",1.0,4],[558.17,352.75,641.83,401.05,"#868990",1.0,4],[600.0,445.9,898.78,618.4,"#e8e8ea",1.3,2],[301.22,698.9,600.0,871.4,"#e8e8ea",1.3,1],[301.22,618.4,600.0,790.9,"#e8e8ea",1.3,1],[600.0,445.9,301.22,618.4,"#e8e8ea",1.3,2],[898.78,698.9,600.0,871.4,"#e8e8ea",1.3,1],[898.78,618.4,600.0,790.9,"#e8e8ea",1.3,1],[301.22,698.9,301.22,618.4,"#e8e8ea",1.3,1],[898.78,698.9,898.78,618.4,"#e8e8ea",1.3,1],[600.0,871.4,600.0,790.9,"#e8e8ea",1.3,1],[600.0,409.1,823.09,537.9,"#e8e8ea",1.3,3],[376.91,618.4,600.0,747.2,"#e8e8ea",1.3,1],[376.91,537.9,600.0,666.7,"#e8e8ea",1.3,2],[600.0,409.1,376.91,537.9,"#e8e8ea",1.3,3],[823.09,618.4,600.0,747.2,"#e8e8ea",1.3,1],[823.09,537.9,600.0,666.7,"#e8e8ea",1.3,1],[376.91,618.4,376.91,537.9,"#e8e8ea",1.3,1],[823.09,618.4,823.09,537.9,"#e8e8ea",1.3,1],[600.0,747.2,600.0,666.7,"#e8e8ea",1.3,1],[600.0,370.0,751.38,457.4,"#e8e8ea",1.3,4],[448.62,537.9,600.0,625.3,"#e8e8ea",1.3,2],[448.62,457.4,600.0,544.8,"#e8e8ea",1.3,3],[600.0,370.0,448.62,457.4,"#e8e8ea",1.3,3],[751.38,537.9,600.0,625.3,"#e8e8ea",1.3,2],[751.38,457.4,600.0,544.8,"#e8e8ea",1.3,2],[448.62,537.9,448.62,457.4,"#e8e8ea",1.3,2],[751.38,537.9,751.38,457.4,"#e8e8ea",1.3,2],[600.0,625.3,600.0,544.8,"#e8e8ea",1.3,2],[600.0,328.6,683.66,376.9,"#e8e8ea",1.3,4],[516.34,457.4,600.0,505.7,"#e8e8ea",1.3,3],[516.34,376.9,600.0,425.2,"#e8e8ea",1.3,4],[600.0,328.6,516.34,376.9,"#e8e8ea",1.3,4],[683.66,457.4,600.0,505.7,"#e8e8ea",1.3,3],[683.66,376.9,600.0,425.2,"#e8e8ea",1.3,4],[516.34,457.4,516.34,376.9,"#e8e8ea",1.3,3],[683.66,457.4,683.66,376.9,"#e8e8ea",1.3,3],[600.0,505.7,600.0,425.2,"#e8e8ea",1.3,3]];
+const MODE = "B";
+
+// ---- tier top diamonds (back,right,front,left) ----
+const TIERS = {
+ 1:{B:[600,445.90],R:[898.78,618.40],F:[600,790.90],L:[301.22,618.40]},
+ 2:{B:[600,409.10],R:[823.09,537.90],F:[600,666.70],L:[376.91,537.90]},
+ 3:{B:[600,370.00],R:[751.38,457.40],F:[600,544.80],L:[448.62,457.40]},
+ 4:{B:[600,328.60],R:[683.66,376.90],F:[600,425.20],L:[516.34,376.90]},
+};
+const TIER_N = {1:8,2:7,3:6,4:5};
+
+// ---- timeline (ms) ----
+const T = {
+  groundIn:400,
+  tier:{1:[500,3000],2:[3150,4250],3:[4200,5300],4:[5150,6300]},
+  wire:{1:[1700,3150],2:[3600,4650],3:[4700,5700],4:[5600,6550]},
+  pulse:6500,
+  beamStart:7000, beamEnd:9100,
+  synthStart:9000, synthEnd:11000,
+  particleFade:9000,
+  dimStart:11200,   // build-B wireframe dim
+  loopFadeStart:15000, // infinite loop: figure fades out, then the cycle restarts
+};
+
+// ---- easing ----
+const clamp=(x,a=0,b=1)=>x<a?a:x>b?b:x;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const easeOutCubic=t=>1-Math.pow(1-t,3);
+const easeInOutCubic=t=>t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const gauss=(x,c,s)=>Math.exp(-((x-c)*(x-c))/(2*s*s));
+
+// ---- canvas ----
+const cv=document.getElementById('c');
+const ctx=cv.getContext('2d');
+let dpr=Math.min(window.devicePixelRatio||1,2);
+function size(){
+  const m=Math.min(window.innerWidth,window.innerHeight);
+  cv.style.width=m+'px'; cv.style.height=m+'px';
+  cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+  ctx.setTransform(dpr*cv.width/(W*dpr),0,0,dpr*cv.height/(H*dpr),0,0);
+}
+// simpler: fixed internal res 1200, css scales
+cv.width=W; cv.height=H;
+function fit(){ const m=Math.min(window.innerWidth,window.innerHeight); cv.style.width=m+'px'; cv.style.height=m+'px'; }
+fit(); window.addEventListener('resize',fit);
+
+// ---- grain tile ----
+const grain=document.createElement('canvas'); grain.width=300; grain.height=300;
+(function(){ const g=grain.getContext('2d'); const id=g.createImageData(300,300); const d=id.data;
+  for(let i=0;i<d.length;i+=4){ const v=120+Math.random()*110; d[i]=d[i+1]=d[i+2]=v; d[i+3]=Math.random()*16; }
+  g.putImageData(id,0,0);
+})();
+const grainPat=ctx.createPattern(grain,'repeat');
+
+// ---- glow sprite (soft white dot) ----
+function makeGlow(col){ const s=64,gc=document.createElement('canvas'); gc.width=gc.height=s;
+  const g=gc.getContext('2d'); const grd=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
+  grd.addColorStop(0,col+'ff'); grd.addColorStop(0.25,col+'cc'); grd.addColorStop(0.55,col+'33'); grd.addColorStop(1,col+'00');
+  g.fillStyle=grd; g.fillRect(0,0,s,s); return gc; }
+const glowW=makeGlow('#f2f3f7');
+const glowLime=makeGlow('#d2ef15');
+
+// ---- particles on procedural iso grid per tier ----
+const particles=[];
+for(const t of [1,2,3,4]){
+  const {B,R,L}=TIERS[t]; const N=TIER_N[t];
+  const ux=R[0]-B[0], uy=R[1]-B[1], vx=L[0]-B[0], vy=L[1]-B[1];
+  const [ts,te]=T.tier[t]; const span=te-ts;
+  for(let i=0;i<=N;i++)for(let j=0;j<=N;j++){
+    const a=i/N, b=j/N;
+    const tx=B[0]+a*ux+b*vx, ty=B[1]+a*uy+b*vy;
+    const ang=Math.random()*Math.PI*2, dist=210+Math.random()*330;
+    particles.push({
+      tier:t, tx,ty,
+      ox:tx+Math.cos(ang)*dist, oy:ty+Math.sin(ang)*dist - 30*Math.random(),
+      t0: ts + Math.random()*span*0.55,
+      dur: 820+Math.random()*360,
+      r: 0.9+Math.random()*0.7,
+      ph: Math.random()*Math.PI*2,
+    });
+  }
+}
+
+// ---- beams: key intersections of lower tiers -> apex ----
+// corner beams (converge inward) + central spine beams (rise straight up x=600)
+const beamSrc=[];
+for(const t of [1,2]){ const D=TIERS[t]; for(const k of ['B','R','F','L']) beamSrc.push(D[k]); }
+beamSrc.push([600,618.40]); beamSrc.push([600,537.90]); beamSrc.push([600,457.40]); // tier centres = spine
+const beams=beamSrc.map((p,i)=>({sx:p[0],sy:p[1],t0:T.beamStart+i*38,dur:1700}));
+
+// ---- helpers ----
+function structureP(tier,now){ const [a,b]=T.wire[tier]; return clamp((now-a)/(b-a)); }
+
+// ---- draw ----
+function frame(now){
+  ctx.setTransform(1,0,0,1,0,0);
+  // bg
+  ctx.globalCompositeOperation='source-over';
+  ctx.fillStyle='#1A1A18'; ctx.fillRect(0,0,W,H);
+  // grain
+  const gIn=clamp(now/T.groundIn);
+  ctx.globalAlpha=0.9*gIn; ctx.fillStyle=grainPat; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+
+  // wireframe opacity global (build-B dims at end)
+  let wireGlobal=1;
+  if(MODE==='B'){ wireGlobal = lerp(1,0.20, clamp((now-T.dimStart)/1200)); }
+  // infinite-loop fade: dissolve the whole figure near cycle end so the restart is seamless
+  const loopFade = 1 - clamp((now-T.loopFadeStart)/800);
+  wireGlobal *= loopFade;
+
+  // wireframe (crisp, source-over)
+  for(const s of SEG){
+    const wp=structureP(s[6],now); if(wp<=0) continue;
+    const grow=easeOutCubic(clamp(wp*1.25));
+    const op=clamp(wp*1.1)*wireGlobal;
+    ctx.globalAlpha=op;
+    ctx.strokeStyle=s[4]; ctx.lineWidth=s[5];
+    ctx.lineCap='butt'; ctx.lineJoin='miter';
+    ctx.beginPath(); ctx.moveTo(s[0],s[1]);
+    ctx.lineTo(lerp(s[0],s[2],grow), lerp(s[1],s[3],grow));
+    ctx.stroke();
+  }
+  ctx.globalAlpha=1;
+
+  // ---- additive layer: particles + beams + apex bloom ----
+  ctx.globalCompositeOperation='lighter';
+
+  // particles
+  const pFade = 1-clamp((now-T.particleFade)/850);   // fade out at synthesis
+  const pulse = gauss(now,T.pulse,170);              // unison pulse
+  // during the beam phase, calm the settled field so the beams dominate
+  const beamDim = lerp(1,0.45, clamp((now-T.beamStart)/700));
+  if(pFade>0){
+    for(const p of particles){
+      if(now<p.t0) continue;
+      const a=clamp((now-p.t0)/p.dur);
+      const e=easeOutCubic(a);
+      const x=lerp(p.ox,p.tx,e), y=lerp(p.oy,p.ty,e);
+      let op = clamp(a*2.2) ;            // fade in while travelling
+      // settled idle shimmer + pulse brighten
+      const idle = 0.82 + 0.18*Math.sin(now*0.004 + p.ph);
+      let bright = (a>=1? idle*beamDim : 1) ;
+      bright += pulse*0.9*(a>=1?1:0);
+      op *= pFade;
+      const r=(p.r + (a>=1? pulse*1.0:0))*1.8;
+      ctx.globalAlpha=clamp(op*bright)*0.7;
+      ctx.drawImage(glowW, x-r, y-r, r*2, r*2);
+      // crisp core
+      ctx.globalAlpha=clamp(op)*0.9;
+      ctx.fillStyle='#f6f7fb';
+      ctx.beginPath(); ctx.arc(x,y,p.r*0.55,0,7); ctx.fill();
+    }
+  }
+
+  // beams
+  for(const b of beams){
+    if(now<b.t0) continue;
+    const fade = 1-clamp((now-(T.synthStart+300))/700);
+    if(fade<=0) continue;
+    const a=easeInOutCubic(clamp((now-b.t0)/b.dur));
+    const aBack=Math.max(0,a-0.55);                 // longer luminous trail
+    const hx=lerp(b.sx,APEX[0],a), hy=lerp(b.sy,APEX[1],a);
+    const tx=lerp(b.sx,APEX[0],aBack), ty=lerp(b.sy,APEX[1],aBack);
+    // faint lime only in the final approach to the apex
+    const limeMix = a>0.90 ? (a-0.90)/0.10*0.5 : 0;
+    const grd=ctx.createLinearGradient(tx,ty,hx,hy);
+    grd.addColorStop(0,'rgba(238,242,250,0)');
+    grd.addColorStop(0.6,`rgba(238,242,250,${0.14*fade})`);
+    grd.addColorStop(1,`rgba(${Math.round(238-limeMix*20)},${Math.round(244+limeMix*4)},${Math.round(250-limeMix*210)},${0.5*fade})`);
+    ctx.strokeStyle=grd; ctx.lineCap='round';
+    const drawLine=(w,al)=>{ctx.lineWidth=w; ctx.globalAlpha=al*fade; ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(hx,hy); ctx.stroke();};
+    drawLine(2.4,0.07);  // soft halo
+    drawLine(1.2,0.18);  // mid
+    drawLine(0.7,0.55);  // bright core
+    // travelling head glow
+    const hr=5*fade; ctx.globalAlpha=0.35*fade;
+    ctx.drawImage(limeMix>0?glowLime:glowW, hx-hr, hy-hr, hr*2, hr*2);
+  }
+  ctx.globalAlpha=1;
+
+  // apex bloom (additive)
+  if(now>=T.synthStart){
+    const at=clamp((now-T.synthStart)/(T.synthEnd-T.synthStart));
+    const bloom=gauss(now,T.synthStart+520,360);
+    const ar=8+ bloom*12 + at*2;
+    ctx.globalAlpha=clamp(0.22*bloom+0.13*at)*loopFade;
+    ctx.drawImage(glowLime, APEX[0]-ar, APEX[1]-ar, ar*2, ar*2);
+    // ambient breathing after settle
+    if(now>T.synthEnd){
+      const br=9+2*Math.sin((now-T.synthEnd)*0.0016);
+      ctx.globalAlpha=0.14*loopFade; ctx.drawImage(glowLime, APEX[0]-br, APEX[1]-br, br*2, br*2);
+    }
+  }
+
+  // ---- final apex dot (source-over: dark seat + lime core), exact figure ----
+  ctx.globalCompositeOperation='source-over';
+  if(now>=T.synthStart){
+    const core=clamp((now-T.synthStart-120)/420);
+    ctx.globalAlpha=core*loopFade; ctx.fillStyle='#1A1A18';
+    ctx.beginPath(); ctx.arc(APEX[0],APEX[1],8,0,7); ctx.fill();
+    ctx.globalAlpha=core*loopFade; ctx.fillStyle='#D2EF15';
+    ctx.beginPath(); ctx.arc(APEX[0],APEX[1],5.5,0,7); ctx.fill();
+  }
+  ctx.globalAlpha=1;
+}
+
+// ?t=<ms> renders one deterministic frame (for headless capture / debugging);
+// otherwise the reveal plays once on load and holds.
+const FORCED = new URLSearchParams(location.search).get('t');
+if(FORCED!==null){
+  // render twice so any first-call lazy state (patterns) is warm
+  frame(parseFloat(FORCED)); requestAnimationFrame(()=>frame(parseFloat(FORCED)));
+} else {
+  let start=null;
+  const LOOP=16000;   // full cycle: ~11s reveal + hold + 0.8s fade-out, then repeats forever
+  function loop(ts){ if(start===null) start=ts; frame((ts-start)%LOOP); requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+}
+</script>
+</body></html>

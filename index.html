@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Information Architecture — motion study</title>
+<style>
+  html,body{margin:0;background:#1A1A18;color:#9a9a96;
+    font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;}
+  header{padding:34px 24px 4px;text-align:center;}
+  header h1{margin:0;font-size:13px;font-weight:600;letter-spacing:.18em;
+    color:#d8d8d4;text-transform:uppercase;}
+  header p{margin:8px 0 0;font-size:12px;color:#67675f;letter-spacing:.04em;}
+  .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;max-width:1080px;margin:22px auto 48px;padding:0 20px;}
+  .card{position:relative;background:#141413;border:1px solid #292926;
+    border-radius:8px;overflow:hidden;aspect-ratio:1/1;}
+  .card iframe{width:100%;height:100%;border:0;display:block;background:#1A1A18;}
+  .lab{position:absolute;left:13px;bottom:11px;font-size:11px;letter-spacing:.06em;
+    color:#76766f;pointer-events:none;}
+  .lab b{color:#cfcfca;font-weight:600;}
+  footer{text-align:center;color:#4f4f49;font-size:11px;padding:0 0 30px;letter-spacing:.04em;}
+</style>
+</head>
+<body>
+  <header>
+    <h1>Information Architecture</h1>
+    <p>motion study · loops continuously · two options to compare</p>
+  </header>
+  <div class="wrap">
+    <div class="card">
+      <iframe src="d01-A.html" scrolling="no" loading="eager" title="Option A"></iframe>
+      <div class="lab"><b>Option&nbsp;A</b> &nbsp;— resolves into the full figure</div>
+    </div>
+    <div class="card">
+      <iframe src="d01-B.html" scrolling="no" loading="eager" title="Option B"></iframe>
+      <div class="lab"><b>Option&nbsp;B</b> &nbsp;— settles to the lit apex</div>
+    </div>
+  </div>
+  <footer>private preview — work in progress</footer>
+</body>
+</html>
