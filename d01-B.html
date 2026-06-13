@@ -30,7 +30,8 @@ const T = {
   synthStart:9000, synthEnd:11000,
   particleFade:9000,
   dimStart:11200,   // build-B wireframe dim
-  loopFadeStart:15000, // infinite loop: figure fades out, then the cycle restarts
+  loopFadeStart:99999999, // figure NEVER fades — the pyramid stays (it IS the diagram)
+  ambientStart:11500,     // perpetual gentle "information intake" wave begins here
 };
 
 // ---- easing ----
@@ -133,6 +134,27 @@ function frame(now){
   }
   ctx.globalAlpha=1;
 
+  // ---- perpetual "information intake": a soft light keeps flowing UP into the structure ----
+  // the pyramid itself NEVER disappears; only this gentle wave loops, forever.
+  if(now > T.ambientStart){
+    const ease = clamp((now - T.ambientStart)/1400);
+    ctx.globalCompositeOperation='lighter';
+    const P = 4800;                                       // one upward pass ~every 4.8s
+    for(let k=0;k<2;k++){                                 // two offset passes = continuous feel
+      const ph = (((now - T.ambientStart)/P) + k*0.5) % 1; // 0..1, base -> apex
+      const waveY = lerp(880, 400, ph);
+      const env = Math.sin(ph*Math.PI);                  // fade in/out at the ends of each pass
+      for(const s of SEG){
+        const my=(s[1]+s[3])/2, d=Math.abs(my-waveY);
+        const band=1-d/64; if(band<=0) continue;
+        ctx.globalAlpha = 0.40*band*band*env*ease;
+        ctx.strokeStyle = '#eef0f5'; ctx.lineWidth = s[5];
+        ctx.beginPath(); ctx.moveTo(s[0],s[1]); ctx.lineTo(s[2],s[3]); ctx.stroke();
+      }
+    }
+    ctx.globalAlpha=1;
+  }
+
   // ---- additive layer: particles + beams + apex bloom ----
   ctx.globalCompositeOperation='lighter';
 
@@ -223,8 +245,8 @@ if(FORCED!==null){
   frame(parseFloat(FORCED)); requestAnimationFrame(()=>frame(parseFloat(FORCED)));
 } else {
   let start=null;
-  const LOOP=16000;   // full cycle: ~11s reveal + hold + 0.8s fade-out, then repeats forever
-  function loop(ts){ if(start===null) start=ts; frame((ts-start)%LOOP); requestAnimationFrame(loop); }
+  // play the reveal ONCE on load, then hold the figure forever while the ambient wave loops
+  function loop(ts){ if(start===null) start=ts; frame(ts-start); requestAnimationFrame(loop); }
   requestAnimationFrame(loop);
 }
 </script>
